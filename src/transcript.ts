@@ -10,6 +10,8 @@ interface TranscriptLine {
   timestamp?: string;
   type?: string;
   subtype?: string;
+  operation?: string;
+  content?: string;
   slug?: string;
   customTitle?: string;
   message?: {
@@ -322,7 +324,7 @@ export async function parseTranscript(transcriptPath: string): Promise<Transcrip
   // Status is deferred so background agents show ◐ until they truly finish.
   for (const [toolUseId, endTime] of queueCompletionMap) {
     const agent = agentMap.get(toolUseId);
-    if (agent) {
+    if (agent?.background) {
       agent.endTime = endTime;
       agent.status = 'completed';
     }
